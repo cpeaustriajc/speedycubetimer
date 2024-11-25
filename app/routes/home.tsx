@@ -156,7 +156,7 @@ const Home = () => {
           ))}
         </tbody>
       </table>
-    </div>
+    </main>
   );
 };
 
