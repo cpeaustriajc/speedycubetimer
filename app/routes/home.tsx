@@ -1,7 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { randomScrambleForEvent } from "cubing/scramble";
-import { Button, Column, Row, Table, TableBody, TableHeader } from "react-aria-components";
+import {
+  Button,
+  Column,
+  Row,
+  Table,
+  TableBody,
+  TableHeader,
+} from "react-aria-components";
 import clsx from "clsx";
+import "cubing/twisty"
 
 type Time = {
   time: number;
@@ -122,6 +130,12 @@ const Home = () => {
         "h-dvh flex flex-col justify-center items-center"
       )}
     >
+      <twisty-player
+        alg={scramble}
+        visualization="2D"
+        background="none"
+        control-panel="none"
+      ></twisty-player>
       <pre className="text-9xl">{formatTime(time)}</pre>
       <p>{scramble}</p>
       <h2>Times</h2>
