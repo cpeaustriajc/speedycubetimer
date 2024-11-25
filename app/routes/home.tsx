@@ -130,6 +130,7 @@ const Home = () => {
           <tr>
             <th>Time</th>
             <th>Average of 5</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -143,10 +144,10 @@ const Home = () => {
               </td>
               <td>
                 <Button
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-red-400 transition-colors bg-red-200 text-red-900 data-[hovered]:bg-red-400/90 h-10 px-4 py-2"
                   onPress={() => {
                     setTimes(times.filter((t) => t.id !== time.id));
                   }}
+                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-red-400 transition-colors bg-red-200 text-red-900 data-[hovered]:bg-red-400/90 h-10 px-4 py-2"
                 >
                   Delete
                 </Button>
