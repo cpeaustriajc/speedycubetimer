@@ -127,7 +127,7 @@ const Home = () => {
       <h2>Times</h2>
       <table className="table-auto">
         <thead>
-          <tr className="flex gap-2">
+          <tr>
             <th>Time</th>
             <th>Average of 5</th>
           </tr>
