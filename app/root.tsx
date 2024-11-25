@@ -2,16 +2,28 @@ import {
   isRouteErrorResponse,
   Links,
   Meta,
+  NavigateOptions,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useHref,
+  useNavigate,
 } from "react-router";
+import { RouterProvider } from "react-aria-components";
 
 import type { Route } from "./+types/root";
 
 import "./app.css";
 
+declare module "react-aria-components" {
+  interface RouterConfig {
+    routerOptions: NavigateOptions;
+  }
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  let navigate = useNavigate();
+
   return (
     <html lang="en">
       <head>
@@ -21,7 +33,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <RouterProvider navigate={navigate} useHref={useHref}>
+          {children}
+        </RouterProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
