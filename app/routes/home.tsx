@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { randomScrambleForEvent } from "cubing/scramble";
 import { Button } from "react-aria-components";
+import clsx from "clsx";
 
 type Time = {
   time: number;
@@ -114,10 +115,12 @@ const Home = () => {
   };
 
   return (
-    <div
-      className={`h-dvh flex flex-col justify-center items-center ${
-        isRunning ? "bg-green-400" : ""
-      } ${keyPressed ? "bg-yellow-400" : ""}`}
+    <main
+      className={clsx(
+        isRunning && "bg-green-400",
+        keyPressed && "bg-yellow-400",
+        "h-dvh flex flex-col justify-center items-center"
+      )}
     >
       <pre className="text-9xl">{formatTime(time)}</pre>
       <p>{scramble}</p>
