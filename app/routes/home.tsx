@@ -9,12 +9,19 @@ import {
   TableHeader,
 } from "react-aria-components";
 import clsx from "clsx";
-import "cubing/twisty"
+import "cubing/twisty";
 
 type Time = {
   time: number;
   id: number;
 };
+
+export function meta() {
+  return [
+    { title: "Speedy Cube Timer" },
+    { name: "description", content: "Fast and open source rubiks cube timer" },
+  ];
+}
 
 const Home = () => {
   const [scramble, setScramble] = useState("");
