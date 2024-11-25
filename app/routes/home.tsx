@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { randomScrambleForEvent } from "cubing/scramble";
-import { Button } from "react-aria-components";
+import { Button, Column, Row, Table, TableBody, TableHeader } from "react-aria-components";
 import clsx from "clsx";
 
 type Time = {
@@ -125,24 +125,22 @@ const Home = () => {
       <pre className="text-9xl">{formatTime(time)}</pre>
       <p>{scramble}</p>
       <h2>Times</h2>
-      <table className="table-auto">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Average of 5</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table className="table-auto">
+        <TableHeader>
+          <Column isRowHeader>Time</Column>
+          <Column>Ao5</Column>
+          <Column>Actions</Column>
+        </TableHeader>
+        <TableBody>
           {times.map((time, index) => (
-            <tr key={index}>
-              <td>{formatTime(time.time)}</td>
-              <td>
+            <Row key={index}>
+              <Column>{formatTime(time.time)}</Column>
+              <Column>
                 {times.length >= 5 && index >= times.length - 5
                   ? formatTime(computeAverageOf5()!)
                   : "-"}
-              </td>
-              <td>
+              </Column>
+              <Column>
                 <Button
                   onPress={() => {
                     setTimes(times.filter((t) => t.id !== time.id));
@@ -151,11 +149,11 @@ const Home = () => {
                 >
                   Delete
                 </Button>
-              </td>
-            </tr>
+              </Column>
+            </Row>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </main>
   );
 };
