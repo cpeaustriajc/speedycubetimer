@@ -146,8 +146,7 @@ const Home = () => {
       ></twisty-player>
       <pre className="text-9xl">{formatTime(time)}</pre>
       <p>{scramble}</p>
-      <h2>Times</h2>
-      <Table className="table-auto">
+      <Table className="table-auto" aria-label="Times">
         <TableHeader>
           <Column isRowHeader>Time</Column>
           <Column>Ao5</Column>
