@@ -10,6 +10,7 @@ import {
 } from "react-aria-components";
 import clsx from "clsx";
 import "cubing/twisty";
+import { useLoaderData, useRevalidator } from "react-router";
 
 type Time = {
   time: number;
@@ -23,8 +24,14 @@ export function meta() {
   ];
 }
 
+export async function clientLoader() {
+  const scramble = await randomScrambleForEvent("333");
+  return scramble.toString();
+}
+
 const Home = () => {
-  const [scramble, setScramble] = useState("");
+  const scramble = useLoaderData<typeof clientLoader>();
+  const revalidator = useRevalidator();
   const [isRunning, setIsRunning] = useState(false);
   const [keyPressed, setKeyPressed] = useState(false);
   const [time, setTime] = useState<number>(0);
@@ -59,8 +66,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getScramble();
-
+    revalidator.revalidate();
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
@@ -79,11 +85,6 @@ const Home = () => {
       window.clearInterval(intervalIdRef.current);
     }
   }, [isRunning]);
-
-  const getScramble = async () => {
-    const scramble = await randomScrambleForEvent("333");
-    setScramble(scramble.toString());
-  };
 
   const formatTime = (timeInSeconds: number) => {
     const hours = Math.floor(timeInSeconds / 3600);
