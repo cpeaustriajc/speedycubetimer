@@ -76,13 +76,23 @@ const Home = () => {
   }, [isRunning]);
 
   useEffect(() => {
+    let startTime: number;
+
     if (isRunning) {
+      startTime = window.performance.now();
       intervalIdRef.current = window.setInterval(() => {
-        setTime((prevTime) => prevTime + 0.01);
+        const currentTime = window.performance.now();
+        setTime((currentTime - startTime) / 1000);
       }, 10);
     } else if (intervalIdRef.current) {
-      window.clearInterval(intervalIdRef.current);
+      clearInterval(intervalIdRef.current);
     }
+
+    return () => {
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current);
+      }
+    };
   }, [isRunning]);
 
   function reset() {
@@ -91,7 +101,13 @@ const Home = () => {
   }
 
   return (
-    <div className="h-dvh">
+    <div
+      className={clsx(
+        isRunning && "bg-green-400",
+        keyPressed && "bg-yellow-400",
+        "h-dvh"
+      )}
+    >
       <aside>
         <Table className="table-auto" aria-label="Times">
           <TableHeader>
@@ -123,13 +139,7 @@ const Home = () => {
           </TableBody>
         </Table>
       </aside>
-      <main
-        className={clsx(
-          isRunning && "bg-green-400",
-          keyPressed && "bg-yellow-400",
-          "flex flex-col justify-center items-center"
-        )}
-      >
+      <main className="flex flex-col justify-center items-center">
         <twisty-player
           alg={scramble}
           visualization="2D"
