@@ -1,0 +1,22 @@
+{
+    "name": "Speedy Cube Timer",
+    "short_name": "speedycubetimer",
+    "description": "Speedy Cube Timer is an open source Rubik's cube timer built with performance in mind and aims to be the most accurate timer with adherence to WCA compliance",
+    "start_url": "/",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}
