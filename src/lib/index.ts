@@ -30,14 +30,31 @@ export function formatTime(timeInSeconds: number) {
 }
 
 export function computeAverageOf5(times: Time[]) {
-	if (times.length < 5) {
-		return null;
-	}
+    if (times.length < 5) {
+        return null;
+    }
 
-	const last5 = times.slice(-5);
-	const sorted = last5.slice().sort((a, b) => a.time - b.time);
-	sorted.pop();
-	sorted.shift();
+    const last5 = times.slice(-5);
+    const sorted = last5.slice().sort((a, b) => a.time - b.time);
+    sorted.pop();
+    sorted.shift();
 
-	return sorted.reduce((a, b) => a + b.time, 0) / 3;
+    const avg = sorted.reduce((a, b) => a + b.time, 0) / 3;
+    return Number(avg.toFixed(2));
+}
+
+export function computeAverageOf12(times: Time[]) {
+    if (times.length < 12) {
+        return null;
+    }
+
+    const last12 = times.slice(-12);
+    const sorted = last12.slice().sort((a, b) => a.time - b.time);
+    sorted.pop();
+    sorted.shift();
+    sorted.pop();
+    sorted.shift();
+
+    const avg = sorted.reduce((a, b) => a + b.time, 0) / 8;
+    return Number(avg.toFixed(2));
 }
