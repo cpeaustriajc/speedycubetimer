@@ -12,7 +12,7 @@
 				<ChartBarIcon class="h-5 w-5 text-blue-600" />
 			</div>
 			<div>
-				<div class="text-2xl font-bold text-slate-800">{computeAverageOf5(times)}</div>
+				<div class="text-2xl font-bold text-slate-800">{computeAverageOf5(times) ?? 'N/A'}</div>
 				<div class="text-sm text-slate-600">Average of 5</div>
 			</div>
 		</div>

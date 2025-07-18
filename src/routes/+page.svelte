@@ -84,7 +84,7 @@
 				<Clock {isRunning} {keyPressed} {time} />
 
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-					<PersonalBest />
+					<PersonalBest {times} />
 					<AverageOf5 {times} />
 					<AverageOf12 {times} />
 				</div>

@@ -23,9 +23,9 @@
 					<span class="font-mono text-sm font-medium">{formatTime(solve.time)}</span>
 
 					<div class="flex items-center gap-2">
-						<span class="text-xs text-slate-500"> {computeAverageOf5(times) ?? 'TBD'}</span>
+						<span class="text-xs text-slate-500"> {computeAverageOf5(times) ?? 'N/A'}</span>
 						<span class="text-xs text-slate-400">|</span>
-						<span class="text-xs text-slate-500">{computeAverageOf12(times) ?? 'TBD'}</span>
+						<span class="text-xs text-slate-500">{computeAverageOf12(times) ?? 'N/A'}</span>
 						<button
 							type="button"
 							class="text-xs text-red-500 hover:text-red-700"

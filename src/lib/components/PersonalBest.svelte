@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { computePersonalBest, type Time } from '$lib';
 	import { TargetIcon } from '@lucide/svelte';
+	let { times }: { times: Time[] } = $props();
 </script>
 
 <div class="rounded-lg border bg-white shadow-sm">
@@ -9,7 +11,7 @@
 				<TargetIcon class="h-5 w-5 text-green-600" />
 			</div>
 			<div>
-				<div class="text-2xl font-bold text-slate-800">5.27</div>
+				<div class="text-2xl font-bold text-slate-800">{computePersonalBest(times) ?? 'N/A'}</div>
 				<div class="text-sm text-slate-600">Personal Best</div>
 			</div>
 		</div>

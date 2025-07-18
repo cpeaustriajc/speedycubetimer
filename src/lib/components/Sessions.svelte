@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { computeAverageOf12, computeAverageOf5, type Time } from '$lib';
+	import { computeAverageOf12, computeAverageOf5, computePersonalBest, type Time } from '$lib';
 	import { Trophy } from '@lucide/svelte';
 
 	interface Props {
@@ -24,7 +24,7 @@
 					<div class="text-xs text-slate-600">Solves</div>
 				</div>
 				<div class="text-center">
-					<div class="text-2xl font-bold text-green-600">7.26</div>
+					<div class="text-2xl font-bold text-green-600">{computePersonalBest(times) ?? 'N/A'}</div>
 					<div class="text-xs text-slate-600">Best</div>
 				</div>
 			</div>
@@ -36,9 +36,9 @@
 						class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700"
 					>
 						{#if times.length >= 5}
-							{computeAverageOf5(times) ?? 'TBD'}
+							{computeAverageOf5(times) ?? 'N/A'}
 						{:else}
-							TBD
+							N/A
 						{/if}
 					</span>
 				</div>
@@ -48,9 +48,9 @@
 						class="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700"
 					>
 						{#if times.length >= 12}
-							{computeAverageOf12(times) ?? 'TBD'}
+							{computeAverageOf12(times) ?? 'N/A'}
 						{:else}
-							TBD
+							N/A
 						{/if}
 					</span>
 				</div>
