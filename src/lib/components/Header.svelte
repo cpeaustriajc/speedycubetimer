@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import { ChartBarIcon, ClockIcon, SettingsIcon } from '@lucide/svelte';
 </script>
 
@@ -14,18 +15,20 @@
 			<p class="text-sm text-slate-600">Professional Speed Cube Timer</p>
 		</div>
 	</div>
-	<div class="flex items-center gap-2">
-		<button
-			class="ring-offset-background focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-		>
-			<SettingsIcon class="mr-2 h-4 w-4" />
-			Settings
-		</button>
-		<button
-			class="ring-offset-background focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-		>
-			<ChartBarIcon class="mr-2 h-4 w-4" />
-			Statistics
-		</button>
-	</div>
+	{#if dev}
+		<div class="flex items-center gap-2">
+			<button
+				class="ring-offset-background focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+			>
+				<SettingsIcon class="mr-2 h-4 w-4" />
+				Settings
+			</button>
+			<button
+				class="ring-offset-background focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+			>
+				<ChartBarIcon class="mr-2 h-4 w-4" />
+				Statistics
+			</button>
+		</div>
+	{/if}
 </header>
