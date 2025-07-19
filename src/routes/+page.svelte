@@ -20,16 +20,19 @@
 	let keyPressed = $state(false);
 	let currentSession = $state('1');
 
+	function stop() {
+		isRunning = false;
+	}
+
 	function reset() {
 		isRunning = false;
 		time = 0;
 	}
-
 	function handleKeyUp(event: KeyboardEvent) {
 		if (event.key === ' ') {
 			if (isRunning) {
 				times.push({ time: time, id: Math.floor(Math.random() * 1000) });
-				reset();
+				stop();
 			} else {
 				keyPressed = false;
 				isRunning = true;
@@ -41,7 +44,8 @@
 		if (event.key === ' ') {
 			if (!isRunning) {
 				keyPressed = true;
-			}
+                reset();
+            }
 		}
 	}
 
