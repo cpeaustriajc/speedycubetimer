@@ -77,7 +77,7 @@ watch(isRunning, (running) => {
             <Solves :times="times" @delete="removeTime" />
         </aside>
         <main class="space-y-6 lg:col-span-3">
-            <Scramble />
+                <LazyScramble />
             <Clock
                 :isRunning="isRunning"
                 :keyPressed="keyPressed"
