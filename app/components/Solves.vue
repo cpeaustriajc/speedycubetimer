@@ -3,22 +3,21 @@ defineProps<{
     times: Time[];
 }>();
 
-defineEmits<{
-    (e: 'delete', id: number): void;
+const emit = defineEmits<{
+    (e: 'delete', id: string): void;
 }>();
 </script>
 
 <template>
-    <div
-        class="h-[442px] overflow-y-scroll rounded-lg border bg-white shadow-sm"
+    <ScrollAreaRoot
+        class="h-[420px] relative overflow-hidden shadow-sm bg-white border rounded-lg"
+        style="--scrollbar-size: 10px"
     >
-        <div class="flex flex-col space-y-1.5 p-6 pb-3">
-            <h3 class="text-lg font-semibold leading-none tracking-tight">
-                Recent Solves
-            </h3>
-        </div>
-        <div class="p-6 pt-0">
-            <div class="space-y-2">
+        <div
+            class="absolute top-0 z-10 w-full h-6 bg-gradient-to-t from-transparent to-white"
+        />
+        <ScrollAreaViewport class="w-full h-full rounded">
+            <div class="py-[15px] px-5 space-y-2">
                 <div
                     v-for="solve in times"
                     :key="solve.id"
@@ -38,13 +37,21 @@ defineEmits<{
                         <button
                             type="button"
                             class="text-xs text-red-500 hover:text-red-700"
-                            @click="$emit('delete', solve.id)"
+                            @click="emit('delete', solve.id.toString())"
                         >
                             <Icon name="lucide:trash" class="h-3 w-3" />
                         </button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </ScrollAreaViewport>
+        <ScrollAreaScrollbar
+            class="flex select-none touch-none p-0.5 z-20 bg-neutral-400 transition-colors duration-[160ms] ease-out hover:bg-blackA2 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-2.5"
+            orientation="vertical"
+        >
+            <ScrollAreaThumb
+                class="flex-1 bg-gray-200 rounded-[10px] relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]"
+            />
+        </ScrollAreaScrollbar>
+    </ScrollAreaRoot>
 </template>
