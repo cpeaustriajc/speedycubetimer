@@ -1,9 +1,6 @@
 <script setup lang="ts">
-type Time = { time: number; id: number };
-type Times = Time[];
-
 const time = ref(0);
-const times = ref<Times>([]);
+const times = ref<Time[]>([]);
 const isRunning = ref(false);
 const keyPressed = ref(false);
 const currentSession = ref('1');
@@ -41,6 +38,10 @@ function handleKeyDown(event: KeyboardEvent) {
     }
 }
 
+function removeTime(id: string) {
+    times.value = times.value.filter((t) => t.id !== Number(id));
+}
+
 let interval: number | undefined;
 
 onMounted(() => {
@@ -70,10 +71,10 @@ watch(isRunning, (running) => {
 </script>
 
 <template>
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
+    <div class="flex flex-col-reverse lg:grid gap-6 lg:grid-cols-4">
         <aside class="lg:col-span-1">
             <Sessions :currentSession="currentSession" :times="times" />
-            <Solves :times="times" />
+            <Solves :times="times" @delete="removeTime" />
         </aside>
         <main class="space-y-6 lg:col-span-3">
             <Scramble />

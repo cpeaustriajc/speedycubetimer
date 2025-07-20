@@ -6,7 +6,7 @@
             >
                 <Icon name="lucide:clock" class="h-6 w-6 text-white" />
             </div>
-            <div>
+            <div class="hidden lg:block">
                 <h1 class="text-2xl font-bold text-slate-800">
                     Speedy Cube Timer
                 </h1>
