@@ -16,5 +16,5 @@ export default defineNuxtConfig({
             },
         },
     },
-    modules: ['@nuxt/icon', '@nuxtjs/tailwindcss'],
+    modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', 'reka-ui/nuxt'],
 });
