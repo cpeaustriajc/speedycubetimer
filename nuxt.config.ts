@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     },
     app: {
         head: {
-            title: 'Speedy Cube Timer',
+            title: 'KyuBix',
             htmlAttrs: {
                 lang: 'en',
             },

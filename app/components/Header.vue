@@ -8,11 +8,8 @@
             </div>
             <div class="hidden lg:block">
                 <h1 class="text-2xl font-bold text-slate-800">
-                    Speedy Cube Timer
+                    KyuBix
                 </h1>
-                <p class="text-sm text-slate-600">
-                    Professional Speed Cube Timer
-                </p>
             </div>
         </div>
         <DevOnly>

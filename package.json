@@ -1,6 +1,5 @@
 {
-    "name": "speedycubetimer",
-    "version": "0.0.1",
+    "name": "kyubix",
     "type": "module",
     "scripts": {
         "dev": "nuxt dev",

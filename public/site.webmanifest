@@ -1,7 +1,7 @@
 {
-    "name": "Speedy Cube Timer",
-    "short_name": "speedycubetimer",
-    "description": "Speedy Cube Timer is an open source Rubik's cube timer built with performance in mind and aims to be the most accurate timer with adherence to WCA compliance",
+    "name": "KyuBix",
+    "short_name": "kyubix",
+    "description": "KyuBix is a Rubik's cube timer built with performance in mind and aims to be the most accurate timer with adherence to WCA compliance",
     "start_url": "/",
     "orientation": "portrait",
     "icons": [
