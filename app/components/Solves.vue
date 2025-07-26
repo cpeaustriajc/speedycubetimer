@@ -19,6 +19,7 @@ const emit = defineEmits<{
         <ScrollAreaViewport class="w-full h-full rounded">
             <div class="py-[15px] px-5 space-y-2">
                 <div
+                    v-if="times.length > 0"
                     v-for="solve in times"
                     :key="solve.id"
                     class="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2 transition-colors hover:bg-slate-100"
@@ -42,6 +43,11 @@ const emit = defineEmits<{
                             <Icon name="lucide:trash" class="h-3 w-3" />
                         </button>
                     </div>
+                </div>
+                <div v-else>
+                    <p class="text-center text-sm text-slate-500">
+                        No solves recorded yet.
+                    </p>
                 </div>
             </div>
         </ScrollAreaViewport>
