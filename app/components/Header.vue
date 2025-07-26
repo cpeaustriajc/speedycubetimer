@@ -7,18 +7,20 @@
         </div>
         <DevOnly>
             <div class="flex items-center gap-2">
-                <button
-                    class="ring-offset-background focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-                >
-                    <Icon name="lucide:settings" class="lg:mr-2 h-4 w-4" />
-                    <span class="sr-only lg:inline"> Settings </span>
-                </button>
-                <button
-                    class="ring-offset-background focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-                >
-                    <Icon name="lucide:chart-bar" class="lg:mr-2 h-4 w-4" />
-                    <span class="sr-only lg:inline"> Statistics </span>
-                </button>
+                <UButton icon="i-lucide-settings" />
+                <UButton icon="i-lucide-chart-bar" />
+                <AuthState>
+                    <template #default="{ loggedIn, clear }">
+                        <button v-if="loggedIn" @click="clear"></button>
+                        <div v-else class="flex items-center gap-2">
+                            <ULink to="/login">Login</ULink>
+                            <ULink to="/register">Register</ULink>
+                        </div>
+                    </template>
+                    <template #placeholder>
+                        <button disabled>Loading...</button>
+                    </template>
+                </AuthState>
             </div>
         </DevOnly>
     </header>

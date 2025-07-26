@@ -3,6 +3,10 @@ export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     ssr: false,
     devtools: { enabled: true },
+    runtimeConfig: {
+        dbhost: process.env.NUXT_DATABASE_URL,
+    },
+    css: ['~/assets/css/main.css'],
     vite: {
         worker: {
             format: 'es',
@@ -24,7 +28,7 @@ export default defineNuxtConfig({
     modules: [
         '@nuxt/icon',
         '@nuxt/test-utils/module',
-        '@nuxtjs/tailwindcss',
-        'reka-ui/nuxt',
+        '@nuxt/ui',
+        'nuxt-auth-utils',
     ],
 });
