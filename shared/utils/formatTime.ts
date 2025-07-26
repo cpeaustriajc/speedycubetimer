@@ -1,25 +1,26 @@
-export function formatTime(timeInSeconds: number) {
+export function formatTime(timeInSeconds: number): string {
+    if (typeof timeInSeconds !== 'number' || isNaN(timeInSeconds)) {
+        throw new Error('Invalid time value');
+    }
+
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
     const seconds = Math.floor(timeInSeconds % 60);
-    const milliseconds = Math.floor((timeInSeconds % 1) * 100);
+    const centiseconds = Math.floor((timeInSeconds % 1) * 100);
 
-    const parts = [];
+    const pad = (num: number, digits: number = 2) => num.toString().padStart(digits, '0');
+
+    const timeComponents: string[] = [];
 
     if (hours > 0) {
-        parts.push(hours.toString().padStart(2, '0'));
+        timeComponents.push(pad(hours), pad(minutes), pad(seconds));
+        return `${timeComponents.join(':')}:${pad(centiseconds)}`;
     }
 
-    if (hours > 0 || minutes > 0) {
-        parts.push(minutes.toString().padStart(2, '0'));
+    if (minutes > 0) {
+        timeComponents.push(pad(minutes), pad(seconds));
+        return `${timeComponents.join(':')}:${pad(centiseconds)}`;
     }
 
-    parts.push(seconds.toString().padStart(2, '0'));
-    parts.push(milliseconds.toString().padStart(2, '0'));
-
-    if (parts.length > 2) {
-        return `${parts.slice(0, -2).join(':')}:${parts.slice(-2).join('.')}`;
-    } else {
-        return parts.join('.');
-    }
+    return `${pad(seconds)}:${pad(centiseconds)}`;
 }
