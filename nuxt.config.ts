@@ -26,6 +26,5 @@ export default defineNuxtConfig({
         '@nuxt/test-utils/module',
         '@nuxtjs/tailwindcss',
         'reka-ui/nuxt',
-        '@clerk/nuxt',
     ],
 });
