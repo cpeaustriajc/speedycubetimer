@@ -4,7 +4,7 @@ const times = ref<Time[]>([]);
 const isRunning = ref(false);
 const keyPressed = ref(false);
 const currentSession = ref('1');
-
+const { scramble, loadScramble } = useScramble();
 function stop() {
     isRunning.value = false;
 }
@@ -14,7 +14,7 @@ function reset() {
     time.value = 0;
 }
 
-function handleKeyUp(event: KeyboardEvent) {
+async function handleKeyUp(event: KeyboardEvent) {
     if (event.key === ' ') {
         if (isRunning.value) {
             times.value.push({
@@ -22,6 +22,7 @@ function handleKeyUp(event: KeyboardEvent) {
                 id: Math.floor(Math.random() * 1000),
             });
             stop();
+            await loadScramble();
         } else {
             keyPressed.value = false;
             isRunning.value = true;
@@ -77,7 +78,7 @@ watch(isRunning, (running) => {
             <Solves :times="times" @delete="removeTime" />
         </aside>
         <main class="space-y-6 lg:col-span-3">
-                <LazyScramble />
+            <LazyScramble />
             <Clock
                 :isRunning="isRunning"
                 :keyPressed="keyPressed"

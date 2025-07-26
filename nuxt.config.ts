@@ -16,10 +16,10 @@ export default defineNuxtConfig({
             },
         },
     },
-    vue:{
+    vue: {
         compilerOptions: {
-            isCustomElement: tag => tag === 'twisty-player',
-        }
+            isCustomElement: (tag) => tag === 'twisty-player',
+        },
     },
     modules: [
         '@nuxt/icon',

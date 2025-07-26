@@ -1,22 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { randomScrambleForEvent } from 'cubing/scramble';
-
-onMounted(() => {
-    import('cubing/twisty');
+onMounted(async () => {
+    await import('cubing/twisty');
 });
 
-const scramble = ref<string | undefined>(undefined);
+const { scramble, loadScramble } = useScramble();
 
-async function loadScramble() {
-    const result = await randomScrambleForEvent('333');
-    scramble.value = result.toString();
-}
-
-// Load initial scramble on mount
-onMounted(() => {
-    if (!scramble.value) loadScramble();
-});
+console.log('Scramble value:', scramble.value);
 </script>
 
 <template>
