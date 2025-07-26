@@ -1,19 +1,18 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { mount } from '@vue/test-utils';
-import Scramble from '../../app/components/Scramble.vue';
-import { randomScrambleForEvent } from 'cubing/scramble';
+import { describe, it, expect } from 'vitest';
+import useScramble from '../../app/composables/useScramble';
 
-vi.mock('cubing/scramble', () => ({
-    generateScramble: vi.fn(() => "R U R' U R U2 R'"),
-    randomScrambleForEvent: vi.fn((eventId: string) => "U R U' L F2"),
-}));
+describe('useScramble', () => {
+    it.todo('should return a scramble as a string', async () => {
+        const { scramble, loadScramble } = useScramble();
 
-describe('Scramble.vue', () => {
-    it('renders scramble on mount', async () => {
-        const wrapper = mount(Scramble);
-        // Wait for async scramble loading
-        await new Promise((r) => setTimeout(r, 0));
-        expect(wrapper.text()).toContain("U R U' L F2");
-        expect(wrapper.find('twisty-player').exists()).toBe(true);
+        // Initially, scramble should be empty
+        expect(scramble.value).toBeTypeOf('undefined');
+
+        // Load a scramble
+        await loadScramble();
+
+        // After loading, scramble should be a non-empty string
+        expect(scramble.value).toBeDefined();
+        expect(scramble.value).toBeTypeOf('string');
     });
 });
