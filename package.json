@@ -10,7 +10,6 @@
         "test": "vitest run --coverage"
     },
     "dependencies": {
-        "@clerk/nuxt": "^1.7.14",
         "@nuxt/icon": "1.15.0",
         "@nuxtjs/tailwindcss": "6.14.0",
         "cubing": "^0.57.2",

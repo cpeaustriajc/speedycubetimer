@@ -7,10 +7,6 @@ export default defineNuxtConfig({
         worker: {
             format: 'es',
         },
-        build: {
-            target: 'es2020',
-        },
-        optimizeDeps: { esbuildOptions: { target: 'es2020' } },
     },
     app: {
         head: {
@@ -30,6 +26,5 @@ export default defineNuxtConfig({
         '@nuxt/test-utils/module',
         '@nuxtjs/tailwindcss',
         'reka-ui/nuxt',
-        '@clerk/nuxt',
     ],
 });
