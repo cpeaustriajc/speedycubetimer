@@ -16,5 +16,16 @@ export default defineNuxtConfig({
             },
         },
     },
-    modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', 'reka-ui/nuxt'],
+    vue:{
+        compilerOptions: {
+            isCustomElement: tag => tag === 'twisty-player',
+        }
+    },
+    modules: [
+        '@nuxt/icon',
+        '@nuxt/test-utils/module',
+        '@nuxtjs/tailwindcss',
+        'reka-ui/nuxt',
+        '@clerk/nuxt',
+    ],
 });
