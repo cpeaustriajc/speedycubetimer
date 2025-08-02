@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
         throw invalidCredentialsError;
     }
 
-    if (!(await verifyPassword(password, user.password))) {
+    if (!(await verifyPassword(user.password, password))) {
         throw invalidCredentialsError;
     }
 
