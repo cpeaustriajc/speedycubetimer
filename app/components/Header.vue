@@ -11,10 +11,15 @@
                 <UButton icon="i-lucide-chart-bar" />
                 <AuthState>
                     <template #default="{ loggedIn, clear }">
-                        <button v-if="loggedIn" @click="clear"></button>
+                        <UButton
+                            icon="lucide:log-out"
+                            aria-label="Logout"
+                            v-if="loggedIn"
+                            @click="clear"
+                        />
                         <div v-else class="flex items-center gap-2">
-                            <ULink to="/login">Login</ULink>
-                            <ULink to="/register">Register</ULink>
+                            <UButton label="Login" to="/login" />
+                            <UButton label="Register" to="/register" />
                         </div>
                     </template>
                     <template #placeholder>
