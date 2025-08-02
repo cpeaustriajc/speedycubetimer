@@ -18,6 +18,7 @@ const registerState = reactive<Partial<RegisterSchema>>({
 
 const toast = useToast();
 const { fetch } = useUserSession();
+const router = useRouter();
 
 async function register(event: FormSubmitEvent<RegisterSchema>) {
     const formData = new FormData();
@@ -41,6 +42,7 @@ async function register(event: FormSubmitEvent<RegisterSchema>) {
                 color: 'success',
                 title: 'Registration Successful',
             });
+            router.back();
         })
         .catch((err) => {
             toast.add({

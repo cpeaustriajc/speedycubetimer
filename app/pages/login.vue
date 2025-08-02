@@ -8,6 +8,7 @@ definePageMeta({
 
 const { fetch } = useUserSession();
 const toast = useToast();
+const router = useRouter();
 
 type LoginSchema = z.output<typeof loginSchema>;
 
@@ -31,6 +32,8 @@ async function login(event: FormSubmitEvent<LoginSchema>) {
                 color: 'success',
                 title: 'Login Successful',
             });
+
+            router.back();
         })
         .catch((err) => {
             toast.add({
