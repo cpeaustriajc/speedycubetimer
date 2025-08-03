@@ -4,10 +4,10 @@ export default defineVitestConfig({
     test: {
         environment: 'nuxt',
     },
-    resolve:{
+    resolve: {
         alias: {
             '#components': 'app/components',
             '#utils': 'shared/utils',
         },
-    }
+    },
 });

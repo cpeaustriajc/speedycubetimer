@@ -1,3 +1,34 @@
+<script setup lang="ts">
+import type { DropdownMenuItem } from '@nuxt/ui';
+
+const { clear } = useUserSession();
+
+const loggedInItems = ref<DropdownMenuItem[]>([
+    {
+        label: 'Profile',
+        icon: 'i-lucide-user',
+    },
+    {
+        label: 'Logout',
+        icon: 'i-lucide-log-out',
+        onSelect: () => {
+            clear();
+        },
+    },
+]);
+const loggedOutItems = ref<DropdownMenuItem[]>([
+    {
+        label: 'Login',
+        icon: 'i-lucide-log-in',
+        to: '/login',
+    },
+    {
+        label: 'Register',
+        icon: 'i-lucide-user-plus',
+        to: '/register',
+    },
+]);
+</script>
 <template>
     <header class="mb-6 flex items-center justify-between">
         <div class="flex items-center gap-3">
@@ -5,21 +36,24 @@
                 <h1 class="text-2xl font-bold text-slate-800">KyuBix</h1>
             </div>
         </div>
-        <DevOnly>
-            <div class="flex items-center gap-2">
-                <button
-                    class="ring-offset-background focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-                >
-                    <Icon name="lucide:settings" class="lg:mr-2 h-4 w-4" />
-                    <span class="sr-only lg:inline"> Settings </span>
-                </button>
-                <button
-                    class="ring-offset-background focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-                >
-                    <Icon name="lucide:chart-bar" class="lg:mr-2 h-4 w-4" />
-                    <span class="sr-only lg:inline"> Statistics </span>
-                </button>
-            </div>
-        </DevOnly>
+        <div class="flex items-center gap-2">
+            <DevOnly>
+                <UButton icon="i-lucide-settings" />
+                <UButton icon="i-lucide-chart-bar" />
+            </DevOnly>
+            <AuthState>
+                <template #default="{ loggedIn }">
+                    <UDropdownMenu v-if="loggedIn" :items="loggedInItems">
+                        <UButton icon="lucide:user" aria-label="Profile" />
+                    </UDropdownMenu>
+                    <UDropdownMenu v-else :items="loggedOutItems">
+                        <UButton icon="lucide:user" aria-label="Profile" />
+                    </UDropdownMenu>
+                </template>
+                <template #placeholder>
+                    <button disabled>Loading...</button>
+                </template>
+            </AuthState>
+        </div>
     </header>
 </template>
