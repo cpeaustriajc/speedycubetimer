@@ -1,3 +1,34 @@
+<script setup lang="ts">
+import type { DropdownMenuItem } from '@nuxt/ui';
+
+const { clear } = useUserSession();
+
+const loggedInItems = ref<DropdownMenuItem[]>([
+    {
+        label: 'Profile',
+        icon: 'i-lucide-user',
+    },
+    {
+        label: 'Logout',
+        icon: 'i-lucide-log-out',
+        onSelect: () => {
+            clear();
+        },
+    },
+]);
+const loggedOutItems = ref<DropdownMenuItem[]>([
+    {
+        label: 'Login',
+        icon: 'i-lucide-log-in',
+        to: '/login',
+    },
+    {
+        label: 'Register',
+        icon: 'i-lucide-user-plus',
+        to: '/register',
+    },
+]);
+</script>
 <template>
     <header class="mb-6 flex items-center justify-between">
         <div class="flex items-center gap-3">
@@ -5,28 +36,24 @@
                 <h1 class="text-2xl font-bold text-slate-800">KyuBix</h1>
             </div>
         </div>
-        <DevOnly>
-            <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2">
+            <DevOnly>
                 <UButton icon="i-lucide-settings" />
                 <UButton icon="i-lucide-chart-bar" />
-                <AuthState>
-                    <template #default="{ loggedIn, clear }">
-                        <UButton
-                            icon="lucide:log-out"
-                            aria-label="Logout"
-                            v-if="loggedIn"
-                            @click="clear"
-                        />
-                        <div v-else class="flex items-center gap-2">
-                            <UButton label="Login" to="/login" />
-                            <UButton label="Register" to="/register" />
-                        </div>
-                    </template>
-                    <template #placeholder>
-                        <button disabled>Loading...</button>
-                    </template>
-                </AuthState>
-            </div>
-        </DevOnly>
+            </DevOnly>
+            <AuthState>
+                <template #default="{ loggedIn }">
+                    <UDropdownMenu v-if="loggedIn" :items="loggedInItems">
+                        <UButton icon="lucide:user" aria-label="Profile" />
+                    </UDropdownMenu>
+                    <UDropdownMenu v-else :items="loggedOutItems">
+                        <UButton icon="lucide:user" aria-label="Profile" />
+                    </UDropdownMenu>
+                </template>
+                <template #placeholder>
+                    <button disabled>Loading...</button>
+                </template>
+            </AuthState>
+        </div>
     </header>
 </template>

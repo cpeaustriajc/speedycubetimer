@@ -33,7 +33,15 @@ export default defineEventHandler(async (event) => {
         throw invalidCredentialsError;
     }
 
-    await setUserSession(event, { user: { email }, loggedInAt: new Date() });
+    await setUserSession(event, {
+        user: {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            avatar: user.avatar,
+        },
+        loggedInAt: new Date(),
+    });
 
     return setResponseStatus(event, 201);
 });
