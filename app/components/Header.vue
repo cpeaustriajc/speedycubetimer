@@ -33,7 +33,7 @@ const loggedOutItems = ref<DropdownMenuItem[]>([
     <header class="mb-6 flex items-center justify-between">
         <div class="flex items-center gap-3">
             <div>
-                <h1 class="text-2xl font-bold text-slate-800">KyuBix</h1>
+                <h1 class="text-2xl font-bold">KyuBix</h1>
             </div>
         </div>
         <div class="flex items-center gap-2">

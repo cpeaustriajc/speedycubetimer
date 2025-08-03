@@ -4,7 +4,8 @@ const times = ref<Time[]>([]);
 const isRunning = ref(false);
 const keyPressed = ref(false);
 const currentSession = ref('1');
-const { scramble, loadScramble } = useScramble();
+const { loadScramble } = useScramble();
+
 function stop() {
     isRunning.value = false;
 }
@@ -69,21 +70,32 @@ watch(isRunning, (running) => {
         window.clearInterval(interval);
     }
 });
+
+const containerClass = computed(() => [
+    {
+        'bg-white': !isRunning.value && !keyPressed.value,
+        'dark:bg-slate-900': !isRunning.value && !keyPressed.value,
+        'bg-green-400': isRunning.value && !keyPressed.value,
+        'bg-yellow-400': keyPressed.value,
+    },
+]);
 </script>
 
 <template>
     <div class="flex flex-col-reverse lg:grid gap-6 lg:grid-cols-4">
-        <aside class="lg:col-span-1">
+        <aside class="lg:col-span-1 grid gap-2">
             <Sessions :currentSession="currentSession" :times="times" />
             <Solves :times="times" @delete="removeTime" />
         </aside>
         <main class="space-y-6 lg:col-span-3">
-            <LazyScramble />
-            <Clock
-                :isRunning="isRunning"
-                :keyPressed="keyPressed"
-                :time="time"
-            />
+            <UCard :class="containerClass">
+                <LazyScramble />
+                <Clock
+                    :isRunning="isRunning"
+                    :keyPressed="keyPressed"
+                    :time="time"
+                />
+            </UCard>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <PersonalBest :times="times" />
                 <AverageOf5 :times="times" />

@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-    <div class="rounded-lg border bg-white shadow-sm">
+    <UCard>
         <div class="p-6">
             <div class="flex items-center gap-3">
                 <div
@@ -17,12 +17,12 @@ defineProps<{
                     />
                 </div>
                 <div>
-                    <div class="text-2xl font-bold text-slate-800">
+                    <div class="text-2xl font-bold">
                         {{ computeAverageOf12(times) ?? 'N/A' }}
                     </div>
-                    <div class="text-sm text-slate-600">Average of 12</div>
+                    <div class="text-sm">Average of 12</div>
                 </div>
             </div>
         </div>
-    </div>
+    </UCard>
 </template>

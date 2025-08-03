@@ -4,37 +4,28 @@ onMounted(async () => {
 });
 
 const { scramble, loadScramble } = useScramble();
-
-console.log('Scramble value:', scramble.value);
 </script>
 
 <template>
-    <div class="rounded-lg border bg-white shadow-sm">
-        <div class="p-6">
-            <div class="mb-4 flex items-center gap-3">
-                <Icon name="lucide:shuffle" class="h-5 w-5 text-slate-600" />
-                <span class="font-medium text-slate-700">Scramble</span>
-                <button
-                    class="ring-offset-background focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground ml-auto inline-flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-                    @click="loadScramble"
-                >
-                    <Icon name="lucide:rotate-ccw" class="w-4 h-4" />
-                </button>
-            </div>
-            <div
-                class="min-h-6 text-center font-mono text-lg leading-relaxed text-slate-800"
-            >
-                <p v-if="scramble">{{ scramble }}</p>
-            </div>
-            <div class="flex min-h-64 justify-center">
-                <twisty-player
-                    v-if="scramble"
-                    :alg="scramble"
-                    visualization="2D"
-                    background="none"
-                    control-panel="none"
-                />
-            </div>
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <Icon name="lucide:shuffle" class="h-5 w-5" />
+            <span class="font-medium">Scramble</span>
         </div>
+        <UButton @click="loadScramble">
+            <Icon name="lucide:rotate-ccw" class="w-4 h-4" />
+        </UButton>
     </div>
+    <div class="min-h-6 text-center font-mono text-lg leading-relaxed">
+        <p v-if="scramble">{{ scramble }}</p>
+    </div>
+    <!-- <div class="flex min-h-64 justify-center">
+            <twisty-player
+                v-if="scramble"
+                :alg="scramble"
+                visualization="2D"
+                background="none"
+                control-panel="none"
+            />
+        </div> -->
 </template>
