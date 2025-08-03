@@ -74,15 +74,6 @@ watch(isRunning, (running) => {
         window.clearInterval(interval);
     }
 });
-
-const containerClass = computed(() => [
-    {
-        'bg-white': !isRunning.value && !keyPressed.value,
-        'dark:bg-slate-900': !isRunning.value && !keyPressed.value,
-        'bg-green-400': isRunning.value && !keyPressed.value,
-        'bg-yellow-400': keyPressed.value,
-    },
-]);
 </script>
 
 <template>
@@ -92,7 +83,7 @@ const containerClass = computed(() => [
             <Solves :times="times" @delete="removeTime" />
         </aside>
         <main class="space-y-6 lg:col-span-3">
-            <UCard :class="containerClass">
+            <UCard>
                 <LazyScramble />
                 <Clock
                     :isRunning="isRunning"
