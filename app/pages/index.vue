@@ -4,7 +4,7 @@ const times = ref<Time[]>([]);
 const isRunning = ref(false);
 const keyPressed = ref(false);
 const currentSession = ref('1');
-const { loadScramble } = useScramble();
+const { scramble, loadScramble } = useScramble();
 
 function stop() {
     isRunning.value = false;
@@ -45,6 +45,10 @@ function removeTime(id: string) {
 }
 
 let interval: number | undefined;
+
+onMounted(async () => {
+    await import('cubing/twisty');
+});
 
 onMounted(() => {
     window.addEventListener('keyup', handleKeyUp);
@@ -96,6 +100,15 @@ const containerClass = computed(() => [
                     :time="time"
                 />
             </UCard>
+            <div class="flex justify-center">
+                <twisty-player
+                    v-if="scramble"
+                    :alg="scramble"
+                    visualization="2D"
+                    background="none"
+                    control-panel="none"
+                />
+            </div>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <PersonalBest :times="times" />
                 <AverageOf5 :times="times" />

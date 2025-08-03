@@ -9,7 +9,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <UCard class="h-[420px] overflow-y-auto">
+    <UCard class="min-h-80 overflow-y-auto">
         <div
             v-if="times.length > 0"
             v-for="solve in times"
