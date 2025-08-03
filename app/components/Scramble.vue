@@ -1,8 +1,4 @@
 <script setup lang="ts">
-onMounted(async () => {
-    await import('cubing/twisty');
-});
-
 const { scramble, loadScramble } = useScramble();
 </script>
 
@@ -19,13 +15,4 @@ const { scramble, loadScramble } = useScramble();
     <div class="min-h-6 text-center font-mono text-lg leading-relaxed">
         <p v-if="scramble">{{ scramble }}</p>
     </div>
-    <!-- <div class="flex min-h-64 justify-center">
-            <twisty-player
-                v-if="scramble"
-                :alg="scramble"
-                visualization="2D"
-                background="none"
-                control-panel="none"
-            />
-        </div> -->
 </template>
