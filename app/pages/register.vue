@@ -61,6 +61,9 @@ function createObjectUrl(file: File): string {
         <UCard>
             <template #header>
                 <h2 class="text-2xl font-bold">Register</h2>
+                <p class="text-sm text-muted">
+                    Create a new account to start using more features.
+                </p>
             </template>
             <UForm
                 :schema="registerSchema"
