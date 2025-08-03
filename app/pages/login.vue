@@ -50,7 +50,7 @@ async function login(event: FormSubmitEvent<LoginSchema>) {
         <UCard>
             <template #header>
                 <h2 class="text-2xl font-bold">Login</h2>
-                <p class="text-sm text-slate-600">
+                <p class="text-sm text-muted">
                     Please enter your credentials to continue.
                 </p>
             </template>
