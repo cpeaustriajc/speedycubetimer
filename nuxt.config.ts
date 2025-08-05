@@ -26,10 +26,12 @@ export default defineNuxtConfig({
         },
     },
     modules: [
-        'reka-ui/nuxt',
-        '@nuxt/icon',
-        '@nuxt/test-utils/module',
-        '@nuxt/ui',
-        'nuxt-auth-utils',
+      'reka-ui/nuxt',
+      '@nuxt/icon',
+      '@nuxt/test-utils/module',
+      '@nuxt/ui',
+      'nuxt-auth-utils',
+      '@vueuse/nuxt',
+      '@pinia/nuxt',
     ],
 });

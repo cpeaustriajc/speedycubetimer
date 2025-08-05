@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const time = ref(0);
-const times = ref<Time[]>([]);
+const times = useLocalStorage<Time[]>('times', []);
 const isRunning = ref(false);
 const keyPressed = ref(false);
 const currentSession = ref('1');
@@ -21,6 +21,7 @@ async function handleKeyUp(event: KeyboardEvent) {
             times.value.push({
                 time: time.value,
                 id: Math.floor(Math.random() * 1000),
+                status: 'solved',
             });
             stop();
             await loadScramble();
@@ -47,6 +48,10 @@ function removeTime(id: number) {
 function dnf(id: number) {
     times.value = times.value.map((t) => {
         if (t.id === id) {
+            if (t.status === 'dnf') {
+                return { ...t, status: 'solved' };
+            }
+
             return { ...t, status: 'dnf' };
         }
         return t;
@@ -56,6 +61,9 @@ function dnf(id: number) {
 function plusTwo(id: number) {
     times.value = times.value.map((t) => {
         if (t.id === id) {
+            if (t.status === 'plusTwo') {
+                return { ...t, time: t.time - 2, status: 'solved' };
+            }
             return { ...t, time: t.time + 2, status: 'plusTwo' };
         }
         return t;
