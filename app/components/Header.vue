@@ -43,10 +43,18 @@ const loggedOutItems = ref<DropdownMenuItem[]>([
             </DevOnly>
             <AuthState>
                 <template #default="{ loggedIn }">
-                    <UDropdownMenu v-if="loggedIn" :items="loggedInItems">
+                    <UDropdownMenu
+                        :content="{ align: 'start' }"
+                        v-if="loggedIn"
+                        :items="loggedInItems"
+                    >
                         <UButton icon="lucide:user" aria-label="Profile" />
                     </UDropdownMenu>
-                    <UDropdownMenu v-else :items="loggedOutItems">
+                    <UDropdownMenu
+                        v-else
+                        :content="{ align: 'start' }"
+                        :items="loggedOutItems"
+                    >
                         <UButton icon="lucide:user" aria-label="Profile" />
                     </UDropdownMenu>
                 </template>
