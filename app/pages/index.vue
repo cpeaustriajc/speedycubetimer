@@ -44,6 +44,24 @@ function removeTime(id: number) {
     times.value = times.value.filter((t) => t.id !== Number(id));
 }
 
+function dnf(id: number) {
+    times.value = times.value.map((t) => {
+        if (t.id === id) {
+            return { ...t, status: 'dnf' };
+        }
+        return t;
+    });
+}
+
+function plusTwo(id: number) {
+    times.value = times.value.map((t) => {
+        if (t.id === id) {
+            return { ...t, time: t.time + 2, status: 'plusTwo' };
+        }
+        return t;
+    });
+}
+
 let interval: number | undefined;
 
 onMounted(async () => {
@@ -80,18 +98,21 @@ watch(isRunning, (running) => {
     <div class="flex flex-col-reverse lg:grid gap-6 lg:grid-cols-4">
         <aside class="lg:col-span-1 grid gap-2">
             <Sessions :currentSession="currentSession" :times="times" />
-            <Solves :times="times" @delete="removeTime" />
+            <Solves
+                :times="times"
+                @delete="removeTime"
+                @dnf="dnf"
+                @plus-two="plusTwo"
+            />
         </aside>
         <main class="space-y-6 lg:col-span-3">
-            <UCard>
-                <LazyScramble />
-                <Clock
-                    :isRunning="isRunning"
-                    :keyPressed="keyPressed"
-                    :time="time"
-                />
-            </UCard>
-            <div class="flex justify-center">
+            <LazyScramble />
+            <Clock
+                :isRunning="isRunning"
+                :keyPressed="keyPressed"
+                :time="time"
+            />
+            <div class="flex justify-center mt-12">
                 <twisty-player
                     v-if="scramble"
                     :alg="scramble"
@@ -99,11 +120,6 @@ watch(isRunning, (running) => {
                     background="none"
                     control-panel="none"
                 />
-            </div>
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <PersonalBest :times="times" />
-                <AverageOf5 :times="times" />
-                <AverageOf12 :times="times" />
             </div>
         </main>
     </div>
