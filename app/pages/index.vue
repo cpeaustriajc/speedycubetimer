@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const time = ref(0);
-const times = useLocalStorage<Time[]>('times', []);
+const times = useSessionStorage<Time[]>('times', []);
 const isRunning = ref(false);
 const keyPressed = ref(false);
 const currentSession = ref('1');
