@@ -27,6 +27,7 @@ export default defineNuxtConfig({
     },
     modules: [
       'reka-ui/nuxt',
+      '@clerk/nuxt',
       '@nuxt/icon',
       '@nuxt/test-utils/module',
       '@nuxt/ui',

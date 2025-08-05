@@ -5,4 +5,10 @@ export default defineAppConfig({
         mode: 'css',
         cssLayer: 'base',
     },
+    ui: {
+        colors: {
+            primary: 'slate',
+            neutral: 'zinc',
+        }
+    }
 });
