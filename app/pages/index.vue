@@ -40,7 +40,7 @@ function handleKeyDown(event: KeyboardEvent) {
     }
 }
 
-function removeTime(id: string) {
+function removeTime(id: number) {
     times.value = times.value.filter((t) => t.id !== Number(id));
 }
 
