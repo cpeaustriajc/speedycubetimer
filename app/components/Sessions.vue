@@ -1,8 +1,28 @@
 <script setup lang="ts">
-defineProps<{
-    currentSession: string;
+const props = defineProps<{
+    currentSession: { id: string; label: string };
+    sessions: { id: string; label: string }[];
     times: Time[];
 }>();
+
+const emit = defineEmits<{
+    (e: 'update:currentSession', value: { id: string; label: string }): void;
+}>();
+
+const sessionItems = computed(() => {
+    return props.sessions.map((session) => ({
+        label: session.label,
+        id: session.id,
+    }));
+});
+function onCreate(item: string) {
+    const newSession = {
+        id: Math.random().toString(36).substring(2, 15),
+        label: item,
+    };
+    props.sessions.push(newSession);
+    emit('update:currentSession', newSession);
+}
 </script>
 
 <template>
@@ -11,9 +31,17 @@ defineProps<{
             <h3
                 class="flex items-center gap-3 text-lg font-semibold leading-none tracking-tight"
             >
-                <Icon name="lucide:trophy" class="h-5 w-5 text-amber-500" />
-                Session
-                {{ currentSession }}
+                <USelectMenu
+                    create-item="always"
+                    class="w-full"
+                    :items="sessionItems"
+                    :search-input="{
+                        placeholder: 'Search or create session...',
+                    }"
+                    :model-value="currentSession"
+                    @update:model-value="emit('update:currentSession', $event)"
+                    @create="onCreate"
+                />
             </h3>
             <div class="space-y-4 p-6 pt-0">
                 <div class="grid grid-cols-2 gap-4">

@@ -8,7 +8,7 @@ const { scramble, loadScramble } = useScramble();
             <Icon name="lucide:shuffle" class="h-5 w-5" />
             <span class="font-medium">Scramble</span>
         </div>
-        <UButton @click="loadScramble">
+        <UButton @click="loadScramble" variant="ghost" size="xl">
             <Icon name="lucide:rotate-ccw" class="w-4 h-4" />
         </UButton>
     </div>

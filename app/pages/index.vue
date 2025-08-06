@@ -1,11 +1,20 @@
 <script setup lang="ts">
 const time = ref(0);
 const times = useSessionStorage<Time[]>('times', []);
+const sessions = useSessionStorage<{ id: string; label: string }[]>('sessions', [
+    {
+        id: '1',
+        label: 'Casual Solves',
+    },
+]);
 const isRunning = ref(false);
 const keyPressed = ref(false);
-const currentSession = ref('1');
+const currentSession = ref(sessions.value[0]!);
 const { scramble, loadScramble } = useScramble();
 
+const currentTimes = computed(() =>
+    times.value.filter((time) => time.sessionId === currentSession.value.id)
+);
 function stop() {
     isRunning.value = false;
 }
@@ -22,6 +31,9 @@ async function handleKeyUp(event: KeyboardEvent) {
                 time: time.value,
                 id: Math.floor(Math.random() * 1000),
                 status: 'solved',
+                sessionId: currentSession.value.id,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
             });
             stop();
             await loadScramble();
@@ -105,9 +117,13 @@ watch(isRunning, (running) => {
 <template>
     <div class="flex flex-col-reverse lg:grid gap-6 lg:grid-cols-4">
         <aside class="lg:col-span-1 grid gap-2">
-            <Sessions :currentSession="currentSession" :times="times" />
+            <Sessions
+                v-model:currentSession="currentSession"
+                v-model:sessions="sessions"
+                :times="currentTimes"
+            />
             <Solves
-                :times="times"
+                :times="currentTimes"
                 @delete="removeTime"
                 @dnf="dnf"
                 @plus-two="plusTwo"
