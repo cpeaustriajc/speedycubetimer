@@ -3,14 +3,20 @@ const props = defineProps<{
     time: number;
     isRunning: boolean;
     keyPressed: boolean;
+    isWaiting: boolean;
 }>();
 
-const clockTextColor = computed(() => [
-    {
-        'text-green-400': props.isRunning && !props.keyPressed,
-        'text-yellow-400': props.keyPressed,
-    },
-]);
+const clockTextColor = computed(() => {
+    if (props.keyPressed && props.isWaiting) {
+        return ['text-yellow-400'];
+    } else if (props.keyPressed && !props.isWaiting) {
+        return ['text-green-400'];
+    } else if (props.isRunning) {
+        return [];
+    } else {
+        return [];
+    }
+});
 </script>
 
 <template>

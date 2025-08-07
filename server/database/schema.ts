@@ -1,24 +1,46 @@
-import { pgTable, text, integer, timestamp } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
+import {
+    pgTable,
+    text,
+    integer,
+    timestamp,
+    index,
+    pgEnum,
+    doublePrecision,
+} from 'drizzle-orm/pg-core';
 
-export const users = pgTable('users', {
-    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+export const solveType = pgEnum('solve_type', ['solved', 'dnf', '+2']);
+
+export const solveSessions = pgTable('solve_sessions', {
+    id: text('id').primaryKey(),
+    userId: text('user_id').notNull(),
     name: text('name').notNull(),
-    email: text('email').notNull().unique(),
-    password: text('password').notNull(),
-    avatar: text('avatar'),
-    createdAt: timestamp('created_at').notNull(),
+    eventType: text('event_type').notNull().default('333'),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
 
-export const credentials = pgTable('credentials', {
-    userId: integer('userId')
-        .notNull()
-        .references(() => users.id, {
-            onDelete: 'cascade',
-            onUpdate: 'cascade',
-        }),
-    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-    publicKey: text('publicKey').notNull(),
-    counter: integer('counter').notNull(),
-    backedUp: integer('backedUp').notNull(),
-    transports: text('transports').notNull(),
-});
+export const sessionRelations = relations(solveSessions, ({ many }) => ({
+    solves: many(solves),
+}));
+
+export const solves = pgTable(
+    'solves',
+    {
+        id: integer('id').primaryKey(),
+        sessionId: text('session_id')
+            .notNull()
+            .references(() => solveSessions.id),
+        time: doublePrecision('time').notNull(),
+        status: solveType('status').notNull().default('solved'),
+        scramble: text('scramble'),
+        createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+    },
+    (t) => [index('idx_session_id').on(t.sessionId)]
+);
+
+export const solveRelations = relations(solves, ({ one }) => ({
+    session: one(solveSessions, {
+        fields: [solves.sessionId],
+        references: [solveSessions.id],
+    }),
+}));
