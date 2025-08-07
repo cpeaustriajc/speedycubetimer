@@ -1,24 +1,26 @@
 <script setup lang="ts">
 const time = ref(0);
-const times = useSessionStorage<Time[]>('solves', []);
-const sessions = useSessionStorage<{ id: string; label: string }[]>(
-    'solve_sessions',
-    [
-        {
-            id: '1',
-            label: 'Casual Solves',
-        },
-    ]
-);
+const { user } = useUser();
+const solvesSessionStorage = useSessionStorage<Time[]>('solves', []);
+const solveSessionsSessionStorage = useSessionStorage<
+    { id: string; label: string }[]
+>('solve_sessions', [
+    {
+        id: '1',
+        label: 'Casual Solves',
+    },
+]);
 const isRunning = ref(false);
 const keyPressed = ref(false);
 const isWaiting = ref(false);
 const waitTimeout = ref<number | null>(null);
-const currentSession = ref(sessions.value[0]!);
+const currentSession = ref(solveSessionsSessionStorage.value[0]!);
 const { scramble, loadScramble } = useScramble();
 
 const currentTimes = computed(() =>
-    times.value.filter((time) => time.sessionId === currentSession.value.id)
+    solvesSessionStorage.value.filter(
+        (time) => time.sessionId === currentSession.value.id
+    )
 );
 
 const userPreferences = useSessionStorage('user_preferences', {
@@ -49,14 +51,36 @@ function reset() {
 async function handleKeyUp(event: KeyboardEvent) {
     if (event.key === ' ') {
         if (isRunning.value) {
-            times.value.push({
-                time: time.value,
-                id: Math.floor(Math.random() * 1000),
-                status: 'solved',
-                sessionId: currentSession.value.id,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-            });
+            if (user.value) {
+                $fetch('/api/solves', {
+                    method: 'POST',
+                    body: {
+                        time: time.value,
+                        sessionId: currentSession.value.id,
+                        sessionName: currentSession.value.label,
+                        status: 'solved',
+                        scramble: scramble.value,
+                    },
+                }).then(() => {
+                    solvesSessionStorage.value.push({
+                        time: time.value,
+                        id: Math.floor(Math.random() * 1000),
+                        status: 'solved',
+                        sessionId: currentSession.value.id,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString(),
+                    });
+                });
+            } else {
+                solvesSessionStorage.value.push({
+                    time: time.value,
+                    id: Math.floor(Math.random() * 1000),
+                    status: 'solved',
+                    sessionId: currentSession.value.id,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                });
+            }
             stop();
             await loadScramble();
         } else if (keyPressed.value) {
@@ -102,11 +126,13 @@ function handleKeyDown(event: KeyboardEvent) {
 }
 
 function removeTime(id: number) {
-    times.value = times.value.filter((t) => t.id !== Number(id));
+    solvesSessionStorage.value = solvesSessionStorage.value.filter(
+        (t) => t.id !== Number(id)
+    );
 }
 
 function dnf(id: number) {
-    times.value = times.value.map((t) => {
+    solvesSessionStorage.value = solvesSessionStorage.value.map((t) => {
         if (t.id === id) {
             if (t.status === 'dnf') {
                 return { ...t, status: 'solved' };
@@ -119,7 +145,7 @@ function dnf(id: number) {
 }
 
 function plusTwo(id: number) {
-    times.value = times.value.map((t) => {
+    solvesSessionStorage.value = solvesSessionStorage.value.map((t) => {
         if (t.id === id) {
             if (t.status === 'plusTwo') {
                 return { ...t, time: t.time - 2, status: 'solved' };
@@ -177,7 +203,7 @@ watch(isRunning, (running) => {
         <aside class="lg:col-span-1 grid gap-2">
             <Sessions
                 v-model:currentSession="currentSession"
-                v-model:sessions="sessions"
+                v-model:sessions="solveSessionsSessionStorage"
                 :times="currentTimes"
             />
             <Solves
