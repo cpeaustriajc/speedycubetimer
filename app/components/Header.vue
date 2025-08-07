@@ -34,24 +34,24 @@ const items = computed<DropdownMenuItem[]>(() => [
                     icon="i-lucide-chart-bar"
                     size="lg"
                 />
+                <SignedOut>
+                    <UDropdownMenu
+                        :content="{
+                            align: 'end',
+                        }"
+                        :items="items"
+                    >
+                        <UButton
+                            class="rounded-full"
+                            size="lg"
+                            icon="i-lucide-user"
+                        />
+                    </UDropdownMenu>
+                </SignedOut>
+                <SignedIn>
+                    <UserButton />
+                </SignedIn>
             </DevOnly>
-            <SignedOut>
-                <UDropdownMenu
-                    :content="{
-                        align: 'end',
-                    }"
-                    :items="items"
-                >
-                    <UButton
-                        class="rounded-full"
-                        size="lg"
-                        icon="i-lucide-user"
-                    />
-                </UDropdownMenu>
-            </SignedOut>
-            <SignedIn>
-                <UserButton />
-            </SignedIn>
         </div>
     </header>
 </template>
