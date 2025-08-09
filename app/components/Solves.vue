@@ -39,7 +39,7 @@ const items = (solveId: number): DropdownMenuItem[] => {
                     v-if="times.length > 0"
                     v-for="solve in times"
                     :key="solve.id"
-                    class="flex items-center justify-between my-2 rounded-lg bg-slate-50 dark:bg-slate-800 px-3 py-2 transition-colors hover:bg-slate-100"
+                    class="flex items-center justify-between my-2 rounded-lg bg-slate-50 dark:bg-slate-800 px-3 py-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-700"
                 >
                     <span class="font-mono text-sm font-medium">{{
                         formatTime(solve.time)
