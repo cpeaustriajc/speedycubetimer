@@ -31,7 +31,6 @@ export default defineNuxtConfig({
       '@nuxt/icon',
       '@nuxt/test-utils/module',
       '@nuxt/ui',
-      'nuxt-auth-utils',
       '@vueuse/nuxt',
       '@pinia/nuxt',
     ],
