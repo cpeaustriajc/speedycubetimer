@@ -1,11 +1,21 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
+    modules: [
+        'reka-ui/nuxt',
+        '@clerk/nuxt',
+        '@nuxt/icon',
+        '@nuxt/test-utils/module',
+        '@nuxt/ui',
+        '@vueuse/nuxt',
+        '@pinia/nuxt',
+    ],
     ssr: false,
     devtools: { enabled: true },
     runtimeConfig: {
         dbhost: process.env.NUXT_DATABASE_URL,
     },
+    debug: true,
     css: ['~/assets/css/main.css'],
     vite: {
         worker: {
@@ -25,13 +35,7 @@ export default defineNuxtConfig({
             isCustomElement: (tag) => tag === 'twisty-player',
         },
     },
-    modules: [
-      'reka-ui/nuxt',
-      '@clerk/nuxt',
-      '@nuxt/icon',
-      '@nuxt/test-utils/module',
-      '@nuxt/ui',
-      '@vueuse/nuxt',
-      '@pinia/nuxt',
-    ],
+    pinia: {
+        storesDirs: ['./app/stores/**'],
+    },
 });
