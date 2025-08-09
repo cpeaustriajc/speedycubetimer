@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const time = ref(0);
-const { user } = useUser();
+const { userId, has } = useAuth();
 const solvesSessionStorage = useSessionStorage<Time[]>('solves', []);
 const solveSessionsSessionStorage = useSessionStorage<
     { id: string; label: string }[]
@@ -51,7 +51,7 @@ function reset() {
 async function handleKeyUp(event: KeyboardEvent) {
     if (event.key === ' ') {
         if (isRunning.value) {
-            if (user.value) {
+            if (userId.value && has.value?.({ plan: 'pro' })) {
                 $fetch('/api/solves', {
                     method: 'POST',
                     body: {
