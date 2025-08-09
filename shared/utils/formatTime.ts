@@ -1,26 +1,30 @@
-export function formatTime(timeInSeconds: number): string {
+export function formatTime(
+    timeInSeconds: number,
+    precision: number = 2
+): string {
     if (typeof timeInSeconds !== 'number' || isNaN(timeInSeconds)) {
         throw new Error('Invalid time value');
     }
 
+    const p = Math.min(3, Math.max(0, Math.floor(precision)));
+
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
     const seconds = Math.floor(timeInSeconds % 60);
-    const centiseconds = Math.floor((timeInSeconds % 1) * 100);
 
-    const pad = (num: number, digits: number = 2) => num.toString().padStart(digits, '0');
+    const fractionUnits = Math.pow(10, p);
+    const fraction = Math.floor((timeInSeconds % 1) * fractionUnits);
 
-    const timeComponents: string[] = [];
+    const pad = (num: number, digits: number = 2) =>
+        num.toString().padStart(digits, '0');
 
-    if (hours > 0) {
-        timeComponents.push(pad(hours), pad(minutes), pad(seconds));
-        return `${timeComponents.join(':')}:${pad(centiseconds)}`;
-    }
+    const base =
+        hours > 0
+            ? [pad(hours), pad(minutes), pad(seconds)].join(':')
+            : minutes > 0
+            ? [pad(minutes), pad(seconds)].join(':')
+            : pad(seconds);
 
-    if (minutes > 0) {
-        timeComponents.push(pad(minutes), pad(seconds));
-        return `${timeComponents.join(':')}:${pad(centiseconds)}`;
-    }
-
-    return `${pad(seconds)}:${pad(centiseconds)}`;
+    // Use dot as the decimal separator for fractional seconds
+    return p > 0 ? `${base}.${pad(fraction, p)}` : base;
 }

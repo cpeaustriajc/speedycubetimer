@@ -28,6 +28,7 @@ const items = computed<DropdownMenuItem[]>(() => [
                     class="rounded-full"
                     icon="i-lucide-settings"
                     size="lg"
+                    to="/settings"
                 />
                 <UButton
                     class="rounded-full"

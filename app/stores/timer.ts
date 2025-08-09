@@ -17,6 +17,10 @@ export const useTimerStore = defineStore('timer', () => {
     const userPreferences = useSessionStorage('userPreferences', {
         timer: {
             waitTime: 200,
+            clockPrecision: 2,
+            showInspectionTime: false,
+            inspectionTimeDuration: 15,
+            autoStartOnInspectionTimeUp: false,
         },
     });
 

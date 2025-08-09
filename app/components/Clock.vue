@@ -6,6 +6,9 @@ const props = defineProps<{
     isWaiting: boolean;
 }>();
 
+const timer = useTimerStore();
+const { userPreferences } = storeToRefs(timer);
+
 const clockTextColor = computed(() => {
     if (props.keyPressed && props.isWaiting) {
         return ['text-yellow-400'];
@@ -17,6 +20,10 @@ const clockTextColor = computed(() => {
         return [];
     }
 });
+
+const precision = computed(
+    () => userPreferences.value.timer.clockPrecision ?? 2
+);
 </script>
 
 <template>
@@ -25,7 +32,7 @@ const clockTextColor = computed(() => {
             class="mb-6 font-mono text-8xl font-bold tracking-tight md:text-9xl"
             :class="clockTextColor"
         >
-            {{ formatTime(time) }}
+            {{ formatTime(time, precision) }}
         </code>
     </div>
 </template>

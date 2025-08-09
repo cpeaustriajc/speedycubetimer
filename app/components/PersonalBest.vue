@@ -1,8 +1,5 @@
 <script setup lang="ts">
-interface Time {
-    time: number;
-    id: number;
-}
+import type { Time } from '~~/shared/types/time';
 
 defineProps<{
     times: Time[];
