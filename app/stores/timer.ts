@@ -14,6 +14,11 @@ export const useTimerStore = defineStore('timer', () => {
     const waitTimeout = ref<number | null>(null);
     let interval: number | undefined;
 
+    const isInspecting = ref(false);
+    const inspectionElapsed = ref(0);
+    const inspectionPenalty = ref<'none' | 'plusTwo' | 'dnf'>('none');
+    let inspectionInterval: number | undefined;
+
     const userPreferences = useSessionStorage('userPreferences', {
         timer: {
             waitTime: 200,
@@ -63,6 +68,31 @@ export const useTimerStore = defineStore('timer', () => {
         if (isRunning.value) return;
         if (keyPressed.value) return;
 
+        if (
+            userPreferences.value.timer.showInspectionTime &&
+            !isInspecting.value
+        ) {
+            keyPressed.value = true;
+            isWaiting.value = true;
+            if (import.meta.client) {
+                waitTimeout.value = window.setTimeout(() => {
+                    isWaiting.value = false;
+                }, userPreferences.value.timer.waitTime);
+            }
+            return;
+        }
+
+        if (isInspecting.value) {
+            keyPressed.value = true;
+            isWaiting.value = true;
+            if (import.meta.client) {
+                waitTimeout.value = window.setTimeout(() => {
+                    isWaiting.value = false;
+                }, userPreferences.value.timer.waitTime);
+            }
+            return;
+        }
+
         reset();
         isWaiting.value = true;
         keyPressed.value = true;
@@ -77,9 +107,47 @@ export const useTimerStore = defineStore('timer', () => {
     function onSpaceUp(): 'none' | 'started' | 'stopped' {
         if (!import.meta.client) return 'none';
 
+        if (isInspecting.value) {
+            if (keyPressed.value) {
+                keyPressed.value = false;
+                if (!isWaiting.value) {
+                    clearWaitTimeout();
+                    isWaiting.value = false;
+                    stopInspection();
+                    isRunning.value = true;
+                    return 'started';
+                } else {
+                    clearWaitTimeout();
+                    isWaiting.value = false;
+                    return 'none';
+                }
+            }
+            return 'none';
+        }
+
         if (isRunning.value) {
             stop();
             return 'stopped';
+        }
+
+        if (
+            userPreferences.value.timer.showInspectionTime &&
+            !isInspecting.value &&
+            !isRunning.value
+        ) {
+            if (keyPressed.value) {
+                keyPressed.value = false;
+                if (!isWaiting.value) {
+                    clearWaitTimeout();
+                    isWaiting.value = false;
+                    startInspection();
+                    return 'none';
+                } else {
+                    clearWaitTimeout();
+                    isWaiting.value = false;
+                    return 'none';
+                }
+            }
         }
 
         if (keyPressed.value) {
@@ -100,11 +168,20 @@ export const useTimerStore = defineStore('timer', () => {
 
     async function finalizeSolve(ctx: FinalizeContext) {
         const now = new Date().toISOString();
+        let finalTime = time.value;
+        let status: Time['status'] = 'solved';
+        if (inspectionPenalty.value === 'dnf') {
+            status = 'dnf';
+        } else if (inspectionPenalty.value === 'plusTwo') {
+            status = 'plusTwo';
+            finalTime = finalTime + 2;
+        }
+
         const record: Time = {
-            time: time.value,
+            time: finalTime,
             id: Math.floor(Math.random() * 1000),
             sessionId: currentSession.value.id,
-            status: 'solved',
+            status,
             createdAt: now,
             updatedAt: now,
         };
@@ -125,7 +202,10 @@ export const useTimerStore = defineStore('timer', () => {
                 console.error(e);
             }
         }
-        solves.value.push(record);
+    solves.value.push(record);
+
+    // reset inspection penalty for next solve
+    inspectionPenalty.value = 'none';
     }
 
     function removeTime(id: number) {
@@ -180,6 +260,63 @@ export const useTimerStore = defineStore('timer', () => {
         { immediate: false }
     );
 
+    function startInspection() {
+        if (!import.meta.client) return;
+        if (!userPreferences.value.timer.showInspectionTime) return;
+
+        if (inspectionInterval) {
+            window.clearInterval(inspectionInterval);
+            inspectionInterval = undefined;
+        }
+
+        const start = window.performance.now();
+        inspectionElapsed.value = 0;
+        inspectionPenalty.value = 'none';
+        isInspecting.value = true;
+
+        const duration = Number(
+            userPreferences.value.timer.inspectionTimeDuration ?? 15
+        );
+
+        inspectionInterval = window.setInterval(() => {
+            const now = window.performance.now();
+            inspectionElapsed.value = (now - start) / 1000;
+
+            if (
+                inspectionElapsed.value > duration + 2 &&
+                inspectionPenalty.value !== 'dnf'
+            ) {
+                inspectionPenalty.value = 'dnf';
+            } else if (
+                inspectionElapsed.value > duration &&
+                inspectionPenalty.value === 'none'
+            ) {
+                inspectionPenalty.value = 'plusTwo';
+            }
+
+            if (
+                userPreferences.value.timer.autoStartOnInspectionTimeUp &&
+                inspectionElapsed.value >= duration &&
+                !isRunning.value &&
+                isInspecting.value &&
+                !keyPressed.value
+            ) {
+                stopInspection();
+                isWaiting.value = false;
+                isRunning.value = true;
+            }
+        }, 1);
+    }
+
+    function stopInspection() {
+        if (!import.meta.client) return;
+        if (inspectionInterval) {
+            window.clearInterval(inspectionInterval);
+            inspectionInterval = undefined;
+        }
+        isInspecting.value = false;
+    }
+
     function dispose() {
         if (!import.meta.client) return;
         if (interval) {
@@ -187,6 +324,10 @@ export const useTimerStore = defineStore('timer', () => {
             interval = undefined;
         }
         clearWaitTimeout();
+        if (inspectionInterval) {
+            window.clearInterval(inspectionInterval);
+            inspectionInterval = undefined;
+        }
     }
 
     return {
@@ -194,6 +335,9 @@ export const useTimerStore = defineStore('timer', () => {
         isRunning,
         keyPressed,
         isWaiting,
+    isInspecting,
+    inspectionElapsed,
+    inspectionPenalty,
         userPreferences,
         sessions,
         currentSession,
@@ -207,6 +351,8 @@ export const useTimerStore = defineStore('timer', () => {
         plusTwo,
         reset,
         stop,
+    startInspection,
+    stopInspection,
         dispose,
     };
 });

@@ -8,6 +8,10 @@ const {
     isRunning,
     keyPressed,
     isWaiting,
+    isInspecting,
+    inspectionElapsed,
+    inspectionPenalty,
+    userPreferences,
     currentTimes,
     currentSession,
     sessions: solveSessionsSessionStorage,
@@ -29,7 +33,26 @@ async function handleKeyUp(event: KeyboardEvent) {
                 isPro: Boolean(has.value?.({ plan: 'pro' })),
             });
             await loadScramble();
+            // Do not auto-start inspection; require user interaction
         }
+    }
+}
+
+function onPointerDown(e: PointerEvent) {
+    if (!e.isPrimary) return;
+    timer.onSpaceDown();
+}
+
+async function onPointerUp(e: PointerEvent) {
+    if (!e.isPrimary) return;
+    const result = timer.onSpaceUp();
+    if (result === 'stopped') {
+        await timer.finalizeSolve({
+            scramble: scramble.value,
+            userId: userId.value ?? null,
+            isPro: Boolean(has.value?.({ plan: 'pro' })),
+        });
+        await loadScramble();
     }
 }
 
@@ -66,12 +89,28 @@ onBeforeUnmount(() => {
         </aside>
         <main class="space-y-6 lg:col-span-3">
             <LazyScramble />
-            <Clock
-                :isRunning="isRunning"
-                :keyPressed="keyPressed"
-                :isWaiting="isWaiting"
-                :time="time"
-            />
+            <div
+                class="select-none"
+                @pointerdown.prevent="onPointerDown"
+                @pointerup.prevent="onPointerUp"
+            >
+                <Inspection
+                    v-if="userPreferences.timer.showInspectionTime && isInspecting"
+                    :elapsed="inspectionElapsed"
+                    :duration="userPreferences.timer.inspectionTimeDuration"
+                    :isInspecting="isInspecting"
+                    :keyPressed="keyPressed"
+                    :isWaiting="isWaiting"
+                    :penalty="inspectionPenalty"
+                />
+                <Clock
+                    v-else
+                    :isRunning="isRunning"
+                    :keyPressed="keyPressed"
+                    :isWaiting="isWaiting"
+                    :time="time"
+                />
+            </div>
             <div class="flex justify-center mt-12">
                 <twisty-player
                     v-if="scramble"
