@@ -23,13 +23,13 @@ const items = computed<DropdownMenuItem[]>(() => [
             </div>
         </div>
         <div class="flex items-center gap-2">
+            <UButton
+                class="rounded-full"
+                icon="i-lucide-settings"
+                size="lg"
+                to="/settings"
+            />
             <DevOnly>
-                <UButton
-                    class="rounded-full"
-                    icon="i-lucide-settings"
-                    size="lg"
-                    to="/settings"
-                />
                 <UButton
                     class="rounded-full"
                     icon="i-lucide-chart-bar"
