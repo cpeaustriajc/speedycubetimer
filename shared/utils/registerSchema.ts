@@ -27,7 +27,7 @@ export default z
             .min(6, 'Confirm Password must be at least 6 characters long'),
     })
     .refine((data) => data.password === data.confirmPassword, {
-        error: "Passwords don't match",
+    error: "Passwords don't match",
         path: ['confirmPassword'],
     });
 // .refine((data) => data.avatar.size <= MAX_FILE_SIZE, {

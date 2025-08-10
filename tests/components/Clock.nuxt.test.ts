@@ -5,9 +5,7 @@ import { Clock } from '#components';
 
 const { formatTime } = vi.hoisted(() => {
     return {
-        formatTime: vi.fn(() => {
-            return ('0' / 100).toFixed(2);
-        }),
+        formatTime: vi.fn(() => '0.00'),
     };
 });
 
@@ -18,14 +16,24 @@ mockNuxtImport('formatTime', () => {
 describe('Clock component', () => {
     it('should render 0.00 seconds initially', async () => {
         const wrapper = await mountSuspended(Clock, {
-            props: { time: 0, isRunning: false, keyPressed: false },
+            props: {
+                time: 0,
+                isRunning: false,
+                keyPressed: false,
+                isWaiting: false,
+            },
         });
         expect(wrapper.text()).toContain('0.00');
     });
 
     it('should not update time immediately after pressing spacebar', async () => {
         const wrapper = await mountSuspended(Clock, {
-            props: { time: 0, isRunning: false, keyPressed: false },
+            props: {
+                time: 0,
+                isRunning: false,
+                keyPressed: false,
+                isWaiting: false,
+            },
         });
         const initialTime = wrapper.text();
 
