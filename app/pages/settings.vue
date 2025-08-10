@@ -10,6 +10,7 @@ const settingsFormSchema = z.object({
     autoStartOnInspectionTimeUp: z.boolean().default(false),
     clockPrecision: z.number().default(2),
     waitTime: z.number().default(200),
+    hideUiDuringSolve: z.boolean().default(false),
 });
 
 type SettingsFormSchema = z.output<typeof settingsFormSchema>;
@@ -22,6 +23,7 @@ const settingsFormState = reactive<Partial<SettingsFormSchema>>({
         userPreferences.value.timer.autoStartOnInspectionTimeUp ?? false,
     clockPrecision: userPreferences.value.timer.clockPrecision ?? 2,
     waitTime: userPreferences.value.timer.waitTime ?? 200,
+    hideUiDuringSolve: userPreferences.value.timer.hideUiDuringSolve ?? false,
 });
 
 watch(
@@ -33,6 +35,7 @@ watch(
             prefs.autoStartOnInspectionTimeUp;
         settingsFormState.clockPrecision = prefs.clockPrecision;
         settingsFormState.waitTime = prefs.waitTime;
+    settingsFormState.hideUiDuringSolve = prefs.hideUiDuringSolve ?? false;
     },
     { deep: true }
 );
@@ -52,6 +55,7 @@ watch(
                 Math.max(0, Number(state.clockPrecision ?? 2))
             ),
             waitTime: Math.max(0, Number(state.waitTime ?? 200)),
+            hideUiDuringSolve: Boolean(state.hideUiDuringSolve),
         };
     },
     { deep: true, immediate: true }
@@ -98,6 +102,13 @@ watch(
                 <USwitch
                     v-model="settingsFormState.showInspectionTime"
                     label="Show Inspection Time"
+                />
+            </UFormField>
+
+            <UFormField label="Focus Mode (hide UI during solve/inspection)">
+                <USwitch
+                    v-model="settingsFormState.hideUiDuringSolve"
+                    label="Hide other UI while solving"
                 />
             </UFormField>
             <DevOnly>

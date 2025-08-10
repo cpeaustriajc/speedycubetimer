@@ -26,6 +26,7 @@ export const useTimerStore = defineStore('timer', () => {
             showInspectionTime: false,
             inspectionTimeDuration: 15,
             autoStartOnInspectionTimeUp: false,
+            hideUiDuringSolve: false,
         },
     });
 
