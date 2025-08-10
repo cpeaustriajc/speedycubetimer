@@ -7,6 +7,7 @@ import {
     index,
     pgEnum,
     doublePrecision,
+    boolean,
 } from 'drizzle-orm/pg-core';
 
 export const solveType = pgEnum('solve_type', ['solved', 'dnf', '+2']);
@@ -44,3 +45,19 @@ export const solveRelations = relations(solves, ({ one }) => ({
         references: [solveSessions.id],
     }),
 }));
+
+export const preferences = pgTable(
+    'preferences',
+    {
+        userId: text('user_id').primaryKey(),
+        showInspectionTime: boolean('show_inspection_time').default(false),
+        inspectionTimeDuration: integer('inspection_time_duration').default(15),
+        autoStartOnInspectionTimeUp: boolean(
+            'auto_start_on_inspection_time_up'
+        ).default(false),
+        clockPrecision: integer('clock_precision').default(2),
+        waitTime: integer('wait_time').default(200),
+        hideUiDuringSolve: boolean('hide_ui_during_solve').default(false),
+    },
+    (t) => [index('idx_user_id').on(t.userId)]
+);

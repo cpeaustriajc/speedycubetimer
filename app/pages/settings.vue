@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import z from 'zod';
+const { userId, has } = useAuth();
 
 const timer = useTimerStore();
 const { userPreferences } = storeToRefs(timer);
+const { isSignedIn } = useUser();
 
 const settingsFormSchema = z.object({
     showInspectionTime: z.boolean().default(false),
@@ -35,14 +37,42 @@ watch(
             prefs.autoStartOnInspectionTimeUp;
         settingsFormState.clockPrecision = prefs.clockPrecision;
         settingsFormState.waitTime = prefs.waitTime;
-    settingsFormState.hideUiDuringSolve = prefs.hideUiDuringSolve ?? false;
+        settingsFormState.hideUiDuringSolve = prefs.hideUiDuringSolve ?? false;
     },
     { deep: true }
 );
 
+const persistSettings = useDebounceFn(
+    async (state: Partial<SettingsFormSchema>) => {
+        try {
+            await $fetch('/api/settings', {
+                method: 'POST',
+                body: {
+                    showInspectionTime: Boolean(state.showInspectionTime),
+                    inspectionTimeDuration: Number(
+                        state.inspectionTimeDuration ?? 15
+                    ),
+                    autoStartOnInspectionTimeUp: Boolean(
+                        state.autoStartOnInspectionTimeUp
+                    ),
+                    clockPrecision: Math.min(
+                        3,
+                        Math.max(0, Number(state.clockPrecision ?? 2))
+                    ),
+                    waitTime: Math.max(0, Number(state.waitTime ?? 200)),
+                    hideUiDuringSolve: Boolean(state.hideUiDuringSolve),
+                },
+            });
+        } catch (e) {
+            console.error('Failed to persist settings', e);
+        }
+    },
+    300
+);
+
 watch(
     settingsFormState,
-    (state) => {
+    async (state) => {
         userPreferences.value.timer = {
             ...userPreferences.value.timer,
             showInspectionTime: Boolean(state.showInspectionTime),
@@ -57,6 +87,9 @@ watch(
             waitTime: Math.max(0, Number(state.waitTime ?? 200)),
             hideUiDuringSolve: Boolean(state.hideUiDuringSolve),
         };
+
+    if (!isSignedIn.value || !has.value?.({ plan: 'pro' })) return;
+        await persistSettings(state);
     },
     { deep: true, immediate: true }
 );
